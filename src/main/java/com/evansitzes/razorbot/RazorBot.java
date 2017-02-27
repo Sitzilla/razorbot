@@ -1,3 +1,5 @@
+package com.evansitzes.razorbot;
+
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.impl.SlackSessionFactory;
 
@@ -27,9 +29,9 @@ public class RazorBot {
             e.printStackTrace();
         }
 
-//        new MessageSender().sendMessageToAChannel(session);
-//        new MessageEventListener().registeringAListener(session);
-//        new MessageEventHandler(session);
-//        new MessageEventListener().registeringAListener(session, new MessageEventHandler(session));
+//        new com.evansitzes.razorbot.MessageSender().sendMessageToAChannel(session);
+//        new com.evansitzes.razorbot.MessageEventListener().registeringAListener(session);
+//        new com.evansitzes.razorbot.MessageEventHandler(session);
+//        new com.evansitzes.razorbot.MessageEventListener().registeringAListener(session, new com.evansitzes.razorbot.MessageEventHandler(session));
     }
 }

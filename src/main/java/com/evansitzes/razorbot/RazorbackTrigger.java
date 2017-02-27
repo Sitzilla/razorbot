@@ -1,3 +1,5 @@
+package com.evansitzes.razorbot;
+
 /**
  * Created by evan on 2/26/17.
  */
