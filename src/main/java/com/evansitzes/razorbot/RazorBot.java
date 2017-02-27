@@ -24,7 +24,7 @@ public class RazorBot {
             session.connect();
             new MessageEventListener().registeringAListener(session, new MessageEventHandler(session));
 
-            // TODO handle this properly
+            // TODO handleTrigger this properly
         } catch (final IOException e) {
             e.printStackTrace();
         }

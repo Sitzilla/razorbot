@@ -1,8 +1,6 @@
 package com.evansitzes.razorbot;
 
-import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
-import com.ullink.slack.simpleslackapi.SlackUser;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import com.ullink.slack.simpleslackapi.listeners.SlackMessagePostedListener;
 
@@ -15,19 +13,22 @@ public class MessageEventListener {
 
     public void registeringAListener(final SlackSession session, final MessageEventHandler messageEventHandler) {
 
-        // first define the listener
+        // First define the listener
         final SlackMessagePostedListener messagePostedListener = new SlackMessagePostedListener() {
             public void onEvent(final SlackMessagePosted event, final SlackSession session) {
 
-                // ignore messages from the bot
-                if (event.getSender().getId().equals(BOT_ID)) {
+                // Ignore messages from bots
+                if (event.getSender().isBot()) {
                     return;
                 }
 
-                final SlackChannel channelOnWhichMessageWasPosted = event.getChannel();
-                final String messageContent = event.getMessageContent();
-                final SlackUser messageSender = event.getSender();
-                messageEventHandler.handle(channelOnWhichMessageWasPosted, messageContent);
+                // Handle DM
+                if (event.getMessageContent().contains(BOT_ID)) {
+                    messageEventHandler.handleDirectMessage(event.getChannel(), event.getMessageContent());
+                    return;
+                }
+
+                messageEventHandler.handleTrigger(event.getChannel(), event.getMessageContent());
             }
         };
 

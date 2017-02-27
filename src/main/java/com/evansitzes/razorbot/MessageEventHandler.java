@@ -1,5 +1,6 @@
 package com.evansitzes.razorbot;
 
+import com.evansitzes.razorbot.messages.HackernewsMessage;
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
 
@@ -14,10 +15,18 @@ public class MessageEventHandler {
         this.session = session;
     }
 
-    public void handle(final SlackChannel channel, final String message) {
+    public void handleTrigger(final SlackChannel channel, final String message) {
         if (RazorbackTrigger.isTrigger(message)) {
             session.sendMessage(channel, "Arkansas? Go Hogs!!");
             session.sendMessage(channel, RazorbackTrigger.IMAGE_URL);
+        }
+    }
+
+    public void handleDirectMessage(final SlackChannel channel, final String message) {
+        if (HackernewsMessage.isValid(message)) {
+            final String storyUrl = HackernewsMessage.getTopStory();
+            session.sendMessage(channel, "Current top story on Hacker News");
+            session.sendMessage(channel, storyUrl);
         }
     }
 }
