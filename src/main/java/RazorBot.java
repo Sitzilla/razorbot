@@ -17,8 +17,9 @@ public class RazorBot {
             e.printStackTrace();
         }
 
-
-        new MessageSender().sendMessageToAChannel(session);
-        new MessageEventListener().registeringAListener(session);
+//        new MessageSender().sendMessageToAChannel(session);
+//        new MessageEventListener().registeringAListener(session);
+//        new MessageEventHandler(session);
+        new MessageEventListener().registeringAListener(session, new MessageEventHandler(session));
     }
 }

@@ -9,22 +9,28 @@ import com.ullink.slack.simpleslackapi.listeners.SlackMessagePostedListener;
  */
 public class MessageEventListener {
 
-    public void registeringAListener(final SlackSession session) {
+    private static final String BOT_ID = "U3BGLQKA9";
+
+    public void registeringAListener(final SlackSession session, final MessageEventHandler messageEventHandler) {
+
         // first define the listener
         final SlackMessagePostedListener messagePostedListener = new SlackMessagePostedListener() {
-            public void onEvent(final SlackMessagePosted event, final SlackSession session)
-            {
+            public void onEvent(final SlackMessagePosted event, final SlackSession session) {
+
+                // ignore messages from the bot
+                if (event.getSender().getId().equals(BOT_ID)) {
+                    return;
+                }
+
                 final SlackChannel channelOnWhichMessageWasPosted = event.getChannel();
                 final String messageContent = event.getMessageContent();
                 final SlackUser messageSender = event.getSender();
-
+                messageEventHandler.handle(channelOnWhichMessageWasPosted, messageContent);
             }
         };
+
         //add it to the session
         session.addMessagePostedListener(messagePostedListener);
-
-        //that's it, the listener will get every message post events the bot can get notified on
-        //(IE: the messages sent on channels it joined or sent directly to it)
     }
 
 }
