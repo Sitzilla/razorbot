@@ -28,7 +28,7 @@ public class MessageEventListener {
                     return;
                 }
 
-                messageEventHandler.handleTrigger(event.getChannel(), event.getMessageContent());
+                messageEventHandler.handleRule(event);
             }
         };
 

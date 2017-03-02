@@ -1,11 +1,16 @@
 package com.evansitzes.razorbot;
 
+import com.evansitzes.razorbot.triggers.GeneralRule;
+import com.evansitzes.razorbot.triggers.RazorbackRule;
+import com.evansitzes.razorbot.triggers.SwearStatsRule;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.impl.SlackSessionFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -15,23 +20,29 @@ public class RazorBot {
 
     public static void main(final String[] args) {
 
-        final Properties properties = new Properties();
+        final Properties properties = new Properties();;
+        final SlackSession session;
 
         try {
             final InputStream inputStream = new FileInputStream("env.properties");
             properties.load(inputStream);
-            final SlackSession session = SlackSessionFactory.createWebSocketSlackSession(properties.getProperty("BOT_ID"));
+            session = SlackSessionFactory.createWebSocketSlackSession(properties.getProperty("BOT_ID"));
             session.connect();
-            new MessageEventListener().registeringAListener(session, new MessageEventHandler(session));
 
-            // TODO handleTrigger this properly
         } catch (final IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to create Slack Session.", e.getCause());
         }
 
-//        new com.evansitzes.razorbot.MessageSender().sendMessageToAChannel(session);
-//        new com.evansitzes.razorbot.MessageEventListener().registeringAListener(session);
-//        new com.evansitzes.razorbot.MessageEventHandler(session);
-//        new com.evansitzes.razorbot.MessageEventListener().registeringAListener(session, new com.evansitzes.razorbot.MessageEventHandler(session));
+        final MessageEventHandler messageEventHandler = new MessageEventHandler(session, loadRules());
+        new MessageEventListener().registeringAListener(session, messageEventHandler);
+    }
+
+    private static List<GeneralRule> loadRules() {
+        final List<GeneralRule> rules = new ArrayList<GeneralRule>();
+
+        rules.add(new RazorbackRule());
+        rules.add(new SwearStatsRule());
+
+        return rules;
     }
 }
