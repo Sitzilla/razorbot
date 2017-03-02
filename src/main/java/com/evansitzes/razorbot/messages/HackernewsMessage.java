@@ -1,6 +1,8 @@
 package com.evansitzes.razorbot.messages;
 
 import com.evansitzes.razorbot.helpers.InputConverter;
+import com.ullink.slack.simpleslackapi.SlackSession;
+import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -13,21 +15,25 @@ import java.io.IOException;
 /**
  * Created by evan on 2/27/17.
  */
-public class HackernewsMessage {
+public class HackernewsMessage extends GeneralMessage {
 
     private static final String TOP_NEWS_URL = "https://hacker-news.firebaseio.com/v0/topstories.json";
     private static final String STORY_URL = "https://hacker-news.firebaseio.com/v0/item/{STORY_ID}.json";
 
-    public static String getTopStory() {
-        final String[] topStories = getTopStories();
-        return getStoryUrl(topStories[0]);
-    }
-
-    public static boolean isValid(final String message) {
+    @Override
+    public boolean isValid(final String message) {
         return message.toLowerCase().contains("news")
-               || message.toLowerCase().contains("story");
+                || message.toLowerCase().contains("story");
     }
 
+    @Override
+    public void handle(final SlackSession session, final SlackMessagePosted event) {
+        final String[] topStories = getTopStories();
+
+        final String storyUrl = getStoryUrl(topStories[0]);
+        session.sendMessage(event.getChannel(), "Current top story on Hacker News");
+        session.sendMessage(event.getChannel(), storyUrl);
+    }
 
     private static String[] getTopStories() {
         final DefaultHttpClient httpClient = new DefaultHttpClient();

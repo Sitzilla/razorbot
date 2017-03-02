@@ -24,7 +24,7 @@ public class MessageEventListener {
 
                 // Handle DM
                 if (event.getMessageContent().contains(BOT_ID)) {
-                    messageEventHandler.handleDirectMessage(event.getChannel(), event.getMessageContent());
+                    messageEventHandler.handleDirectMessage(event);
                     return;
                 }
 

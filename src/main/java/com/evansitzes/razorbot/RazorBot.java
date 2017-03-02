@@ -1,5 +1,7 @@
 package com.evansitzes.razorbot;
 
+import com.evansitzes.razorbot.messages.GeneralMessage;
+import com.evansitzes.razorbot.messages.HackernewsMessage;
 import com.evansitzes.razorbot.triggers.GeneralRule;
 import com.evansitzes.razorbot.triggers.RazorbackRule;
 import com.evansitzes.razorbot.triggers.SwearStatsRule;
@@ -33,7 +35,7 @@ public class RazorBot {
             throw new RuntimeException("Unable to create Slack Session.", e.getCause());
         }
 
-        final MessageEventHandler messageEventHandler = new MessageEventHandler(session, loadRules());
+        final MessageEventHandler messageEventHandler = new MessageEventHandler(session, loadRules(), loadMessages());
         new MessageEventListener().registeringAListener(session, messageEventHandler);
     }
 
@@ -45,4 +47,13 @@ public class RazorBot {
 
         return rules;
     }
+
+    private static List<GeneralMessage> loadMessages() {
+        final List<GeneralMessage> messages = new ArrayList<GeneralMessage>();
+
+        messages.add(new HackernewsMessage());
+
+        return messages;
+    }
+
 }

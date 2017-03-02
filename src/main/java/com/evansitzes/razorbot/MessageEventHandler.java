@@ -1,8 +1,7 @@
 package com.evansitzes.razorbot;
 
-import com.evansitzes.razorbot.messages.HackernewsMessage;
+import com.evansitzes.razorbot.messages.GeneralMessage;
 import com.evansitzes.razorbot.triggers.GeneralRule;
-import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 
@@ -15,10 +14,12 @@ public class MessageEventHandler {
 
     private final SlackSession session;
     private final List<GeneralRule> generalRules;
+    private final List<GeneralMessage> directMessages;
 
-    public MessageEventHandler(final SlackSession session, final List<GeneralRule> generalRules) {
+    public MessageEventHandler(final SlackSession session, final List<GeneralRule> generalRules, final List<GeneralMessage> directMessages) {
         this.session = session;
         this.generalRules = generalRules;
+        this.directMessages = directMessages;
     }
 
     public void handleRule(final SlackMessagePosted event) {
@@ -29,11 +30,11 @@ public class MessageEventHandler {
         }
     }
 
-    public void handleDirectMessage(final SlackChannel channel, final String message) {
-        if (HackernewsMessage.isValid(message)) {
-            final String storyUrl = HackernewsMessage.getTopStory();
-            session.sendMessage(channel, "Current top story on Hacker News");
-            session.sendMessage(channel, storyUrl);
+    public void handleDirectMessage(final SlackMessagePosted event) {
+        for (final GeneralMessage message : directMessages) {
+            if (message.isValid(event.getMessageContent())) {
+                message.handle(session, event);
+            }
         }
     }
 }
