@@ -51,10 +51,6 @@ public class SwearWordEntity {
 
     @Override
     public String toString() {
-        return "SwearWordEntity{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", swearWords='" + swearWords + '\'' +
-                '}';
+        return name + " score: " + swearWords;
     }
 }

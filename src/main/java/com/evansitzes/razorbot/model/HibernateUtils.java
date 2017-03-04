@@ -8,6 +8,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import java.util.List;
+
 /**
  * Created by evan on 2/27/17.
  */
@@ -21,9 +23,9 @@ public class HibernateUtils {
     }
 
     public SwearWordEntity getUser(final SlackUser user) {
-        final Session hibernateSession = sessionAnnotationFactory.getCurrentSession();
-        hibernateSession.beginTransaction();
-        SwearWordEntity entity = (SwearWordEntity) hibernateSession.get(SwearWordEntity.class, user.getId());
+        final Session session = sessionAnnotationFactory.getCurrentSession();
+        session.beginTransaction();
+        SwearWordEntity entity = (SwearWordEntity) session.get(SwearWordEntity.class, user.getId());
 
         // Create entity if doesnt exist
         if (entity == null) {
@@ -33,19 +35,29 @@ public class HibernateUtils {
             entity.setSwearWords("{}");
         }
 
-        hibernateSession.getTransaction().commit();
+        session.getTransaction().commit();
         sessionAnnotationFactory.close();
 
         return entity;
     }
 
     public void updateUser(final SwearWordEntity entity) {
-        final Session hibernateSession = sessionAnnotationFactory.getCurrentSession();
-        hibernateSession.beginTransaction();
+        final Session session = sessionAnnotationFactory.getCurrentSession();
+        session.beginTransaction();
         //Save the Model object
-        hibernateSession.saveOrUpdate(entity);
-        hibernateSession.getTransaction().commit();
+        session.saveOrUpdate(entity);
+        session.getTransaction().commit();
         sessionAnnotationFactory.close();
+    }
+
+    public List<SwearWordEntity> getAllUsers() {
+        final Session session = sessionAnnotationFactory.getCurrentSession();
+        session.beginTransaction();
+
+        final List<SwearWordEntity> users = session.createCriteria(SwearWordEntity.class).list();
+
+        sessionAnnotationFactory.close();
+        return users;
     }
 
 

@@ -2,6 +2,7 @@ package com.evansitzes.razorbot;
 
 import com.evansitzes.razorbot.messages.GeneralMessage;
 import com.evansitzes.razorbot.messages.HackernewsMessage;
+import com.evansitzes.razorbot.messages.SwearStatsMessage;
 import com.evansitzes.razorbot.triggers.GeneralRule;
 import com.evansitzes.razorbot.triggers.RazorbackRule;
 import com.evansitzes.razorbot.triggers.SwearStatsRule;
@@ -52,6 +53,7 @@ public class RazorBot {
         final List<GeneralMessage> messages = new ArrayList<GeneralMessage>();
 
         messages.add(new HackernewsMessage());
+        messages.add(new SwearStatsMessage());
 
         return messages;
     }
