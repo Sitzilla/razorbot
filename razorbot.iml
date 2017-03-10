@@ -23,6 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="exude-0.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.github.Ullink:simple-slack-api:0.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4" level="project" />
@@ -50,12 +51,12 @@
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.27" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.3" level="project" />
     <orderEntry type="library" name="Maven: com.uttesh:exude:0.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tika:tika-core:1.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tika:tika-parsers:1.11" level="project" />
     <orderEntry type="library" name="Maven: org.gagravarr:vorbis-java-tika:0.6" level="project" />
     <orderEntry type="library" name="Maven: com.healthmarketscience.jackcess:jackcess:2.1.2" level="project" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.healthmarketscience.jackcess:jackcess-encrypt:2.1.1" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.jmatio:jmatio:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.james:apache-mime4j-core:0.7.2" level="project" />
