@@ -23,17 +23,16 @@ public class SwearStatsMessage extends GeneralMessage {
     @Override
     public void handle(final SlackSession session, final SlackMessagePosted event) {
         final List<SwearWordEntity> users = new HibernateUtils().getAllUsers();
-
+        final StringBuilder message = new StringBuilder();
         session.sendMessage(event.getChannel(), "Current top stats:");
 
         for (final SwearWordEntity user : users) {
             final Map<String, Integer> swearWordsMap = buildCurrentWordMap(user);
             final int sum = sumSwearWords(swearWordsMap);
-            final String message = user.getName() + " total: " + sum + ", \n breakdown: " + user.getSwearWords();
-
-            session.sendMessage(event.getChannel(), message);
+            message.append(user.getName() + " total: " + sum + ", breakdown: " + user.getSwearWords() + " \n");
         }
 
+        session.sendMessage(event.getChannel(), String.valueOf(message));
     }
 
     // TODO clean this up
