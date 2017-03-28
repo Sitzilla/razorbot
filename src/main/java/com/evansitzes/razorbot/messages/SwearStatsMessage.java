@@ -6,9 +6,7 @@ import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by evan on 3/2/17.
@@ -26,10 +24,20 @@ public class SwearStatsMessage extends GeneralMessage {
         final StringBuilder message = new StringBuilder();
         session.sendMessage(event.getChannel(), "Current top stats:");
 
+        Collections.sort(users, new Comparator<SwearWordEntity>() {
+            public int compare(final SwearWordEntity s1, final SwearWordEntity s2) {
+                // TODO maintaining a count would cut all of this down
+                return ((Integer)sumSwearWords(buildCurrentWordMap(s2))).compareTo(sumSwearWords(buildCurrentWordMap(s1)));
+            }
+        });
+
+        int place = 1;
+
         for (final SwearWordEntity user : users) {
             final Map<String, Integer> swearWordsMap = buildCurrentWordMap(user);
             final int sum = sumSwearWords(swearWordsMap);
-            message.append(user.getName() + " total: " + sum + ", breakdown: " + user.getSwearWords() + " \n");
+            message.append("*" + place + ") " + user.getName() + "*" + " _total:_ " + sum + ", _breakdown:_ " + user.getSwearWords() + " \n");
+            place++;
         }
 
         session.sendMessage(event.getChannel(), String.valueOf(message));
@@ -55,6 +63,7 @@ public class SwearStatsMessage extends GeneralMessage {
         return swearWordsMap;
     }
 
+    // TODO why am I not maintaining a count in the model?
     private static int sumSwearWords(final Map<String, Integer> swearWordsMap) {
         int sum = 0;
 
